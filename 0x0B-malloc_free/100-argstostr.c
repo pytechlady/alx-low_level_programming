@@ -1,42 +1,39 @@
-#include <stdio.h>
 #include <stdlib.h>
-#include "holberton.h"
+
 /**
- * argstostr - main entry
- * @ac: int input
- * @av: double pointer array
- * Return: 0
+ * argstostr - concatenate strings pointed to by `av'
+ * @ac: number of strings
+ * @av: array of strings
+ *
+ * Return: point to new string, or NULL if failure
  */
 char *argstostr(int ac, char **av)
 {
-	int i, n, k = 0, len = 0;
-	char *str;
+	int i, j, k, totalbytes = 0;
+	char *p;
 
 	if (ac == 0 || av == NULL)
 		return (NULL);
 
-	for (i = 0; i < ac; i++)
+	for (i = 0; i < ac; ++i)
 	{
-		for (n = 0; av[i][n]; n++)
-			len++;
+		for (j = 0; *(*(av + i) + j); ++j)
+			;
+		totalbytes += j;
+		++totalbytes; /* space for newline */
 	}
-	len += ac;
+	++totalbytes; /* space for string terminator */
 
-	str = malloc(sizeof(char) * len + 1);
-	if (str == NULL)
+	p = (char *) malloc(totalbytes * sizeof(char));
+
+	if (p == NULL)
 		return (NULL);
-
-	for (i = 0; i < ac; i++)
+	for (i = 0, k = 0; i < ac; ++i, ++k)
 	{
-		for (n = 0; av[i][n]; n++)
-		{
-			str[k] = av[i][n];
-			k++;
-		}
-		if (str[k] == '\0')
-		{
-			str[k++] = '\n';
-		}
+		for (j = 0; *(*(av + i) + j); ++j, ++k)
+			*(p + k) = *(*(av + i) + j);
+		*(p + k) = '\n';
 	}
-	return (str);
+	*(p + k + 1) = '\0';
+	return (p);
 }
