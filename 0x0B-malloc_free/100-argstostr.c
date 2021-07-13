@@ -1,39 +1,86 @@
-#include <stdlib.h>
+#include "holberton.h"
+
+char *_strcat(char *dest, char *src);
 
 /**
- * argstostr - concatenate strings pointed to by `av'
- * @ac: number of strings
- * @av: array of strings
+ * argstostr - concatenates all the arguments
+ * @av: the content
+ * @ac: the size of the content
  *
- * Return: point to new string, or NULL if failure
+ * Return: a pointer to a new string
  */
 char *argstostr(int ac, char **av)
 {
-	int i, j, k, totalbytes = 0;
-	char *p;
+	char *new, *salt;
+	int i, j, k;
 
 	if (ac == 0 || av == NULL)
-		return (NULL);
-
-	for (i = 0; i < ac; ++i)
 	{
-		for (j = 0; *(*(av + i) + j); ++j)
-			;
-		totalbytes += j;
-		++totalbytes; /* space for newline */
-	}
-	++totalbytes; /* space for string terminator */
-
-	p = (char *) malloc(totalbytes * sizeof(char));
-
-	if (p == NULL)
 		return (NULL);
-	for (i = 0, k = 0; i < ac; ++i, ++k)
-	{
-		for (j = 0; *(*(av + i) + j); ++j, ++k)
-			*(p + k) = *(*(av + i) + j);
-		*(p + k) = '\n';
 	}
-	*(p + k + 1) = '\0';
-	return (p);
+	else
+	{
+		for (i = 0, k = 0 ; i < ac ; i++, k++)
+		{
+			for (j = 0 ; av[i][j] != '\0' ; j++, k++)
+			{
+				;
+			}
+		}
+		new = malloc(sizeof(char) * (k + 1));
+		salt = "\n";
+		for (i = 0 ; i < ac ; i++)
+		{
+			new = _strcat(new, av[i]);
+			if (new == NULL)
+			{
+				return (NULL);
+			}
+			if (i + 1 < ac)
+			{
+				new = _strcat(new, salt);
+				if (new == NULL)
+				{
+					return (NULL);
+				}
+			}
+		}
+
+	}
+	new = _strcat(new, salt);
+	if (new == NULL)
+	{
+		return (NULL);
+	}
+	return (new);
+}
+
+/**
+ * _strcat - concatenates two strings
+ * @dest: input parameter string
+ * @src: input parameter string
+ *
+ * Return: dest
+ */
+char *_strcat(char *dest, char *src)
+{
+	int a;
+	int b;
+
+	a = 0;
+
+	while (dest[a] != 0)
+	{
+		a++;
+	}
+
+	b = 0;
+
+	while (src[b] != 0)
+	{
+		dest[a] = src[b];
+		a++;
+		b++;
+	}
+	return (dest);
 }
