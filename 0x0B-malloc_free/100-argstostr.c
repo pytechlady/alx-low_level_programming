@@ -1,52 +1,39 @@
-#include <stdio.h>
 #include <stdlib.h>
 
 /**
- * argstostr - Concate the areguments.
- * @ac: Number of arguments.
- * @av: Arguments.
- * Return: String concatenated.
+ * argstostr - concatenate strings pointed to by `av'
+ * @ac: number of strings
+ * @av: array of strings
+ *
+ * Return: point to new string, or NULL if failure
  */
-
 char *argstostr(int ac, char **av)
 {
-	int i, j, count = 0;
-	char *tmp;
-	char *tmp1;
+	int i, j, k, totalbytes = 0;
+	char *p;
 
 	if (ac == 0 || av == NULL)
-	{
 		return (NULL);
-	}
 
-	for (i = 0; i < ac; i++)
+	for (i = 0; i < ac; ++i)
 	{
-		for (j = 0; av[i][j] != 0; j++)
-		{
-			count++;
-		}
-		count++;
+		for (j = 0; *(*(av + i) + j); ++j)
+			;
+		totalbytes += j;
+		++totalbytes; /* space for newline */
 	}
-	count += 1;
+	++totalbytes; /* space for string terminator */
 
-	tmp = malloc(sizeof(char) * count);
-	tmp1 = tmp;
+	p = (char *) malloc(totalbytes * sizeof(char));
 
-	if (tmp == NULL)
-	{
+	if (p == NULL)
 		return (NULL);
-	}
-
-	for (i = 0; i < ac; i++)
+	for (i = 0, k = 0; i < ac; ++i, ++k)
 	{
-		for (j = 0; av[i][j] != 0; j++)
-		{
-			*tmp = av[i][j];
-			tmp++;
-		}
-		*tmp = '\n';
-		tmp++;
+		for (j = 0; *(*(av + i) + j); ++j, ++k)
+			*(p + k) = *(*(av + i) + j);
+		*(p + k) = '\n';
 	}
-
-	return (tmp1);
+	*(p + k + 1) = '\0';
+	return (p);
 }
